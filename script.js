@@ -1,6 +1,6 @@
 // ==================== 可配置常量 ====================
 const CORRECT_PIN = '1442';          // 正确密码：输入后进入奖励网页
-const PUZZLE_URL = 'https://izanani.xyz';     // 图案识别成功 -> 谜题网页
+const PUZZLE_URL = 'https://my-first-solve-website.izanani2837396044.workers.dev/';     // 图案识别成功 -> 谜题网页
 // 线索图案库（与 TEMPLATE_DATA_URLS 一一对应，图片放缩错位时自动识别）
 const TEMPLATE_FILES = [
     'passdesign_database/passdesign1.jpg',
