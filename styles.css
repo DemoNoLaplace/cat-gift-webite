@@ -1,0 +1,359 @@
+/* 在这里替换您的两张背景图片路径，例如 url('img1.png') */
+:root {
+    --img1: url('images/pixel_cat.png');
+    --img2: url('images/pixel_cat_happy.png');
+}
+
+@font-face {
+    font-family: 'MyPixelFont';
+    src: url('zpix.ttf') format('truetype');
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 16px;
+    font-family: 'MyPixelFont', sans-serif;
+    -webkit-font-smoothing: none;
+}
+
+/* 背景容器：处理向上滚动和图片0.2s交替 */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.3; /* 降低背景亮度以免干扰前景UI */
+    background-size: 250px 250px; /* 图案大小 */
+    /* 2s匀速向上滚动一个图案单位，0.4s循环切换两张图（每张0.2s） */
+    animation: scrollUp 4s linear infinite, swapImages 0.8s step-end infinite;
+}
+
+@keyframes scrollUp {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 -250px; } /* 需要和 background-size 高度一致以实现无缝连接 */
+}
+
+@keyframes swapImages {
+    0% { background-image: var(--img1); }
+    50% { background-image: var(--img2); }
+    100% { background-image: var(--img1); }
+}
+
+/* 全屏 CRT 扫描线 */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.045) 0px,
+        rgba(255, 255, 255, 0.045) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events: none;
+}
+
+/* 页面切换容器：登录界面与吊坠页面二选一显示 */
+.view {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.view.active {
+    display: flex;
+}
+
+/* 登录UI面板 */
+.login-box {
+    position: relative;
+    z-index: 10;
+    border: 5px solid #fff;
+    padding: 3em 4em;
+    background-color: rgba(0, 0, 0, 0.85);
+    /* 黑客发光风格 */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
+/* CRT屏幕扫描线效果（提升黑客氛围） */
+.login-box::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(255, 255, 255, 0.05) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+}
+
+.login-box h2 {
+    font-size: 48px; /* 像素字体请务必用 12/16/24/32 等整数倍字号 */
+    letter-spacing: 5px;
+    margin-bottom: 60px;
+}
+
+/* 4 个像素方框 */
+.pin-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
+
+.pin-box {
+    width: 50px; height: 50px;
+    border: 2px solid #fff;
+    background-color: transparent;
+    transition: all 0.1s ease;
+}
+
+.pin-box.filled {
+    background-color: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
+#hidden-input {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: text; z-index: 20;
+}
+
+/* 拖拽上传框（风格与登录面板一致） */
+.upload-zone {
+    position: relative;
+    z-index: 10;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 440px;
+    border: 3px dashed #fff;
+    background-color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15), inset 0 0 8px rgba(255, 255, 255, 0.08);
+    padding: 26px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.upload-zone:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.upload-zone.dragover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-style: solid;
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.45), inset 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+.upload-zone.success {
+    border-color: #00ff66;
+    border-style: solid;
+    box-shadow: 0 0 18px rgba(0, 255, 102, 0.4), inset 0 0 10px rgba(0, 255, 102, 0.15);
+}
+
+.upload-zone.fail {
+    border-color: #ff3333;
+    border-style: solid;
+    box-shadow: 0 0 18px rgba(255, 51, 51, 0.4), inset 0 0 10px rgba(255, 51, 51, 0.15);
+}
+
+.upload-icon {
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.upload-text {
+    font-size: 24px;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+.upload-preview {
+    max-width: 100%;
+    max-height: 130px;
+    border: 2px solid #fff;
+    margin-top: 16px;
+    image-rendering: pixelated;
+}
+
+.upload-status {
+    font-size: 24px;
+    margin-top: 16px;
+    min-height: 24px;
+    line-height: 1.8;
+}
+
+.upload-status.success {
+    color: #00ff66;
+}
+
+.upload-status.fail {
+    color: #ff3333;
+}
+
+/* 复古实体 Box 弹窗通用样式 */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center; align-items: center;
+    z-index: 50;
+    cursor: pointer;
+}
+
+.msg-box {
+    position: relative;
+    background-color: #000;
+    border: 4px solid #fff;
+    padding: 6px;
+    box-shadow: 10px 10px 0px rgba(255, 255, 255, 0.2);
+    min-width: 300px;
+    max-width: 92vw;
+    animation: popIn 0.15s steps(3) forwards;
+}
+
+.msg-box-inner {
+    border: 2px solid #fff;
+    padding: 30px;
+    text-align: center;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.msg-box-title {
+    background: #fff;
+    color: #000;
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 24px;
+    letter-spacing: 5px;
+    margin-top: -46px;
+    margin-bottom: 20px;
+    position: absolute;
+    left: 20px;
+}
+
+.msg-box-title.red {
+    background: #ff3333;
+    color: #fff;
+}
+
+.msg-main {
+    font-size: 48px; /* 像素字体请务必用 12/16/24/32 等整数倍字号 */
+    letter-spacing: 5px;
+    line-height: 1.8;
+}
+
+.msg-main.green {
+    color: #00ff66;
+}
+
+.msg-sub {
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: #aaa;
+    margin-top: 24px;
+    line-height: 1.8;
+}
+
+/* ==================== 密码成功后：吊坠展示页面 ==================== */
+
+/* 最上方标题文字（风格与登录框 h2 一致） */
+.page-title {
+    font-size: 72px; /* 像素字体请务必用 12/16/24/32 等整数倍字号 */
+    letter-spacing: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    margin-top: -150px;
+}
+
+/* 第二行说明文字 */
+.page-subtitle {
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: #ccc;
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* 三个吊坠列：并排排列，窄屏自动换行 */
+.pendant-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1400px;
+}
+
+/* 单个吊坠卡片：边框与发光风格同登录面板 */
+.pendant-card {
+    flex: 1 1 300px;
+    max-width: 440px;
+    border: 5px solid #fff;
+    padding: 2em 2em 2.5em;
+    background-color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    backdrop-filter: blur(2px);
+}
+
+/* 吊坠名称（英文全大写） */
+.pendant-name {
+    font-size: 32px; /* 像素字体请务必用 12/16/24/32 等整数倍字号 */
+    letter-spacing: 5px;
+    margin-bottom: 25px;
+}
+
+/* 吊坠图片：跟随卡片宽度放大 */
+.pendant-img {
+    width: 100%;
+    height: auto;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    background-color: #000;
+    display: block;
+    margin: 0 auto 25px;
+    image-rendering: pixelated;
+}
+
+/* 具体说明：暂时留空，填好文字后自动显示 */
+.pendant-desc {
+    font-size: 24px;
+    letter-spacing: 2px;
+    line-height: 1.8;
+    color: #ccc;
+    min-height: 90px;
+    word-break: break-word;
+}

@@ -1,0 +1,8 @@
+# 测试与草稿文件（不部署）
+gemini/
+testtdata/
+要求.txt
+
+# 系统文件
+Thumbs.db
+.DS_Store

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫的秘密空间！</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 动态背景 & 扫描线 -->
+    <div class="animated-bg"></div>
+    <div class="scanlines"></div>
+
+    <!-- ==================== 登录界面 ==================== -->
+    <div class="view" id="loginView">
+
+        <!-- 主登录面板 -->
+        <div class="login-box" id="loginBox">
+            <h2>请输入密钥以获得访问</h2>
+            <div class="pin-container">
+                <div class="pin-box"></div><div class="pin-box"></div>
+                <div class="pin-box"></div><div class="pin-box"></div>
+            </div>
+            <!-- 接收 4 位密码输入 -->
+            <input type="password" id="hidden-input" maxlength="4" autocomplete="off" autofocus>
+        </div>
+
+        <!-- 拖拽上传框：识别线索图案 -->
+        <div class="upload-zone" id="uploadZone">
+            <input type="file" id="file-input" accept="image/*" hidden>
+            <div class="upload-icon">[ + ]</div>
+            <div class="upload-text">或上传通行暗号以获得密钥~</div>
+            <img class="upload-preview" id="uploadPreview" alt="预览" hidden>
+            <div class="upload-status" id="uploadStatus"></div>
+        </div>
+
+    </div>
+
+    <!-- ==================== 密码成功后进入的页面（仅供观看） ==================== -->
+    <div class="view pendant-page" id="pendantPage">
+
+        <!-- 最上方居中文字 -->
+        <h1 class="page-title"> !欢迎进入猫空间! </h1>
+
+        <!-- 第二行居中文字 -->
+        <p class="page-subtitle">请选择想要的吊坠款式</p>
+
+        <!-- 三个吊坠：名称 / 图片 / 说明（自上而下，三列并排） -->
+        <div class="pendant-grid">
+
+            <div class="pendant-card">
+                <h3 class="pendant-name">FLY</h3>
+                <img class="pendant-img" src="展示/fly.jpg" alt="FLY">
+                <p class="pendant-desc">经过在某宝挑选的吊坠图案，是柔化的蝴蝶图案，象征着小猫的infp！</p>
+            </div>
+
+            <div class="pendant-card">
+                <h3 class="pendant-name">RUN</h3>
+                <img class="pendant-img" src="展示/run.jpg" alt="RUN">
+                <p class="pendant-desc">经过在某宝挑选的吊坠图案，是柔化的老鼠图案，象征着小老鼠自己！</p>
+            </div>
+
+            <div class="pendant-card">
+                <h3 class="pendant-name">SWIM</h3>
+                <img class="pendant-img" src="展示/swim.jpg" alt="SWIM">
+                <p class="pendant-desc">小猫设计的吊坠图案，是海妖怀着王冠，象征着自我保护的海妖女皇！</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 1. 密码错误弹窗 -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="msg-box">
+            <div class="msg-box-title red">ERROR</div>
+            <div class="msg-box-inner">
+                <p class="msg-main">密码错误</p>
+                <p class="msg-sub">[ 点击任意处关闭 ]</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 密码正确弹窗 -->
+    <div class="modal-overlay" id="successModal">
+        <div class="msg-box">
+            <div class="msg-box-title">ACCESS_GRANTED</div>
+            <div class="msg-box-inner">
+                <p class="msg-main green">访问成功</p>
+                <p class="msg-sub">[ 点击任意处进入猫空间 ]</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 图案识别失败弹窗 -->
+    <div class="modal-overlay" id="matchFailModal">
+        <div class="msg-box">
+            <div class="msg-box-title red">MATCH_FAILED</div>
+            <div class="msg-box-inner">
+                <p class="msg-main">暗号不匹配</p>
+                <p class="msg-sub">[ 请上传正确的通行暗号！点击任意处关闭 ]</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="template_data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
