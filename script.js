@@ -192,7 +192,7 @@ function handleFile(file) {
         if (score >= SIMILARITY_THRESHOLD) {
             uploadZone.classList.add('success');
             setStatus('匹配度 ' + pct + '% —— 识别成功！正在进入谜题空间…', 'success');
-            setTimeout(() => { window.location.href = PUZZLE_URL; }, 1500);
+            setTimeout(() => { window.open(PUZZLE_URL, '_blank'); }, 1500);
         } else {
             checking = false;
             uploadZone.classList.add('fail');
