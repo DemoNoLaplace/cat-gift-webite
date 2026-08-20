@@ -191,7 +191,7 @@ function handleFile(file) {
         const pct = Math.round(score * 100);
         if (score >= SIMILARITY_THRESHOLD) {
             uploadZone.classList.add('success');
-            setStatus('匹配度 ' + pct + '% —— 识别成功！正在进入谜题空间…', 'success');
+            setStatus('匹配度 ' + pct + '% —— 识别成功！正在进入异次元空间…', 'success');
             setTimeout(() => { window.open(PUZZLE_URL, '_blank'); }, 1500);
         } else {
             checking = false;
